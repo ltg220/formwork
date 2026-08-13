@@ -9,7 +9,7 @@ node scripts/gates.mjs
 ```
 
 CI runs exactly this. So does everyone locally, before every commit. There is no second list
-of commands that can drift out of sync — the gates are defined once, in `keel.config.json`.
+of commands that can drift out of sync — the gates are defined once, in `formwork.config.json`.
 
 ```bash
 node scripts/gates.mjs --list          # what would run, without running it
@@ -63,7 +63,7 @@ Detail lives in `docs/rules.md`. The three that matter most:
 
 ## Adding a gate
 
-1. Add the command to `keel.config.json` → `gates.<name>`.
+1. Add the command to `formwork.config.json` → `gates.<name>`.
 2. If it's a new gate name, add it to the tier's list in `scripts/lib/config.mjs`.
 3. Run `node scripts/gates.mjs --list` to confirm it's picked up.
 4. Update the table above.

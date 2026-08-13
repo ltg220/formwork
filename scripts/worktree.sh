@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# keel — parallel lanes via git worktrees.
+# formwork — parallel lanes via git worktrees.
 #
 # Running two or three agent sessions against ONE working tree causes constant push races and
 # cross-session file bleed: session A stages session B's half-finished edits, and the commit
@@ -15,7 +15,7 @@
 
 set -euo pipefail
 
-BASE_BRANCH="${KEEL_BASE_BRANCH:-main}"
+BASE_BRANCH="${FORMWORK_BASE_BRANCH:-main}"
 ROOT="$(git rev-parse --show-toplevel)"
 WT_DIR="$ROOT/worktrees"
 
@@ -36,7 +36,7 @@ require_clean_ref() {
       return
     fi
     echo "error: neither origin/$BASE_BRANCH nor $BASE_BRANCH exists." >&2
-    echo "       Set KEEL_BASE_BRANCH to your default branch." >&2
+    echo "       Set FORMWORK_BASE_BRANCH to your default branch." >&2
     exit 1
   fi
   echo "origin/$BASE_BRANCH"

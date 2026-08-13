@@ -21,7 +21,7 @@
     "queue": "tasks/queue.md",
     "protected": [
       "CLAUDE.md",
-      "keel.config.json",
+      "formwork.config.json",
       "docs/rules.md",
       "docs/decisions/**",
       ".github/workflows/**",

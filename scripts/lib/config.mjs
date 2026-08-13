@@ -1,10 +1,10 @@
-// keel — config loader.
+// formwork — config loader.
 //
-// One job: turn keel.config.json + the declared tier into a fully-resolved settings object.
+// One job: turn formwork.config.json + the declared tier into a fully-resolved settings object.
 //
 // The tier is the training wheel. It supplies defaults for everything, so a new project only
 // has to answer "what am I building" rather than fill in twenty knobs. Anything explicitly
-// set in keel.config.json wins over the tier default — that is the only override mechanism,
+// set in formwork.config.json wins over the tier default — that is the only override mechanism,
 // and it is deliberate: one place to look when behaviour surprises you.
 
 import { readFileSync, existsSync } from "node:fs";
@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 export const REPO_ROOT = resolve(HERE, "..", "..");
-const CONFIG_PATH = join(REPO_ROOT, "keel.config.json");
+const CONFIG_PATH = join(REPO_ROOT, "formwork.config.json");
 
 export const TIERS = ["L1", "L2", "L3"];
 
@@ -86,8 +86,8 @@ export class ConfigError extends Error {}
 export function loadConfig({ tierOverride = null } = {}) {
   if (!existsSync(CONFIG_PATH)) {
     throw new ConfigError(
-      "keel.config.json not found at the repo root.\n" +
-        "This repo has not been initialised. Run /keel-init.",
+      "formwork.config.json not found at the repo root.\n" +
+        "This repo has not been initialised. Run /formwork-init.",
     );
   }
 
@@ -95,7 +95,7 @@ export function loadConfig({ tierOverride = null } = {}) {
   try {
     raw = JSON.parse(readFileSync(CONFIG_PATH, "utf8"));
   } catch (err) {
-    throw new ConfigError(`keel.config.json is not valid JSON: ${err.message}`);
+    throw new ConfigError(`formwork.config.json is not valid JSON: ${err.message}`);
   }
 
   const tier = tierOverride ?? raw.tier ?? "L1";
@@ -109,7 +109,7 @@ export function loadConfig({ tierOverride = null } = {}) {
   const cfg = merge(merge(BASE, { ...defaults, gates: BASE.gates }), { ...raw, tier });
 
   // `gates` is two different things wearing one name: the tier says WHICH gates are required,
-  // keel.config.json says HOW to run each. Keep them separate downstream.
+  // formwork.config.json says HOW to run each. Keep them separate downstream.
   cfg.requiredGates = raw.requiredGates ?? defaults.gates;
   cfg.tierIntent = defaults.intent;
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// keel — doctor.
+// formwork — doctor.
 //
 // Answers one question: has this repo drifted from its own rules?
 //
@@ -42,7 +42,7 @@ const RULEBOOK_MAX_LINES = 200;
 
 function checkRulebook() {
   if (!exists("CLAUDE.md")) {
-    fail("CLAUDE.md is missing", "Restore it from the keel template.");
+    fail("CLAUDE.md is missing", "Restore it from the formwork template.");
     return;
   }
   const body = read("CLAUDE.md");
@@ -53,7 +53,7 @@ function checkRulebook() {
     const unique = [...new Set(placeholders)];
     warn(
       `CLAUDE.md still has ${unique.length} unfilled placeholder(s): ${unique.join(", ")}`,
-      "Run /keel-init, or fill them by hand.",
+      "Run /formwork-init, or fill them by hand.",
     );
   } else {
     ok("CLAUDE.md has no unfilled placeholders");
@@ -80,7 +80,7 @@ function checkDocs(cfg) {
   ];
   const missing = required.filter((p) => !exists(p));
   if (missing.length > 0) {
-    fail(`Missing required docs: ${missing.join(", ")}`, "Restore from the keel template.");
+    fail(`Missing required docs: ${missing.join(", ")}`, "Restore from the formwork template.");
   } else {
     ok(`All ${required.length} required docs present`);
   }
@@ -88,7 +88,7 @@ function checkDocs(cfg) {
   if (!exists("docs/decisions/0001-stack.md")) {
     warn(
       "No stack decision recorded (docs/decisions/0001-stack.md)",
-      "Run /keel-init. Without it, nobody knows why this stack was chosen and the agent " +
+      "Run /formwork-init. Without it, nobody knows why this stack was chosen and the agent " +
         "will happily propose changing it.",
     );
   } else {
@@ -103,7 +103,7 @@ function checkDocs(cfg) {
     if (entries.length === 0) {
       warn(
         `Tier ${cfg.tier} expects handoffs, but docs/handoffs/ has none`,
-        "Run /keel-ship at the end of a session, or write one by hand.",
+        "Run /formwork-ship at the end of a session, or write one by hand.",
       );
     } else {
       ok(`${entries.length} handoff(s) on file`);
@@ -123,7 +123,7 @@ function checkGates(cfg) {
   const msg =
     `Tier ${cfg.tier} requires ${required.length} gate(s); ` +
     `${unconfigured.length} unconfigured: ${unconfigured.join(", ")}`;
-  const fix = "Set them in keel.config.json → gates.<name>. Unconfigured gates are SKIPPED, " +
+  const fix = "Set them in formwork.config.json → gates.<name>. Unconfigured gates are SKIPPED, " +
     "which means green does not mean checked.";
 
   // At L1 that is expected and fine. At L2+ it is the exact silent failure this tool exists
@@ -141,14 +141,14 @@ function checkRatchet(cfg) {
   if (metrics.length === 0) {
     warn(
       `Ratchet is on at tier ${cfg.tier} but no metrics are configured`,
-      "Add ratchet.metrics in keel.config.json, or the ratchet is protecting nothing.",
+      "Add ratchet.metrics in formwork.config.json, or the ratchet is protecting nothing.",
     );
     return;
   }
-  if (!exists(".keel/baseline.json")) {
+  if (!exists(".formwork/baseline.json")) {
     warn(
       `Ratchet has ${metrics.length} metric(s) but no baseline recorded`,
-      "Run: node scripts/ratchet.mjs --update — then commit .keel/baseline.json.",
+      "Run: node scripts/ratchet.mjs --update — then commit .formwork/baseline.json.",
     );
     return;
   }
@@ -160,11 +160,11 @@ function checkProtected(cfg) {
   if (list.length === 0) {
     warn(
       "No protected files configured",
-      "The loop could edit its own rules. At minimum protect CLAUDE.md and keel.config.json.",
+      "The loop could edit its own rules. At minimum protect CLAUDE.md and formwork.config.json.",
     );
     return;
   }
-  const mustProtect = ["CLAUDE.md", "keel.config.json"];
+  const mustProtect = ["CLAUDE.md", "formwork.config.json"];
   const unguarded = mustProtect.filter((f) => !list.includes(f));
   if (unguarded.length > 0) {
     fail(
@@ -192,7 +192,7 @@ function checkGuard(cfg) {
   if (!exists("scripts/guard.mjs")) {
     fail(
       "scripts/guard.mjs is missing — protected files are not enforced",
-      "Restore it from the keel template. Without it, loop.protected is only a suggestion.",
+      "Restore it from the formwork template. Without it, loop.protected is only a suggestion.",
     );
     return;
   }
@@ -270,7 +270,7 @@ function checkStaleness(cfg) {
     if (behind > limit) {
       warn(
         `${label} last updated ${behind} commits ago (limit ${limit})`,
-        "The memory layer is drifting. Run /keel-audit, or write the handoff you skipped. " +
+        "The memory layer is drifting. Run /formwork-audit, or write the handoff you skipped. " +
           "Stale docs mislead more than missing ones.",
       );
     } else {
@@ -284,7 +284,7 @@ function checkArchitecture(cfg) {
   if (!exists("docs/architecture.md")) {
     warn(
       `Tier ${cfg.tier} expects an architecture map, none found`,
-      "Run /keel-map to generate docs/architecture.md from the code.",
+      "Run /formwork-map to generate docs/architecture.md from the code.",
     );
     return;
   }
@@ -292,7 +292,7 @@ function checkArchitecture(cfg) {
 }
 
 function main() {
-  console.log(`${BOLD}keel doctor${OFF}\n`);
+  console.log(`${BOLD}formwork doctor${OFF}\n`);
 
   const tierArg = process.argv.indexOf("--tier");
   const tierOverride = tierArg === -1 ? null : process.argv[tierArg + 1] ?? null;

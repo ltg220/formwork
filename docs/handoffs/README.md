@@ -19,7 +19,7 @@ add a suffix.
 
 ## Rules
 
-- **Write it at the end of the work, not the start of the next session.** `/keel-ship` does
+- **Write it at the end of the work, not the start of the next session.** `/formwork-ship` does
   this automatically.
 - **Say what did NOT work.** The dead ends are the expensive knowledge. Anyone can read the
   code to see what shipped; nobody can read it to see what was tried first.

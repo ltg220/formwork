@@ -1,9 +1,9 @@
 ---
-name: keel-audit
+name: formwork-audit
 description: Check whether the repo has drifted from its own documentation — stale known issues, rules nobody follows, decisions overtaken by events, gates that check nothing. Reports findings and proposes the smallest fix for each. Run periodically, or when the docs stop feeling trustworthy.
 ---
 
-# keel-audit
+# formwork-audit
 
 Do the documents still describe reality?
 
@@ -74,7 +74,7 @@ If one has: that is not an argument, it is a **new decision doc** superseding th
 Regenerate and compare:
 
 ```
-/keel-map
+/formwork-map
 ```
 
 Structural change that nobody wrote down is a finding. Not necessarily a problem — but it

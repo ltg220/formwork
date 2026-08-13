@@ -37,7 +37,7 @@ test("review rounds increase with tier and never decrease", () => {
 });
 
 test("the loop never merges at any tier", () => {
-  // The single most important invariant in keel. If a tier ever shipped stopAt other than
+  // The single most important invariant in formwork. If a tier ever shipped stopAt other than
   // "pr", unattended work could reach the default branch without a human reading it.
   for (const tier of TIERS) {
     assert.equal(TIER_DEFAULTS[tier].loop.stopAt, "pr", `${tier} does not stop at the PR`);
@@ -84,11 +84,11 @@ test("resolveGates pairs every required gate with its command or null", () => {
 });
 
 test("the protected list guards the rulebook and the config", () => {
-  // An agent that can edit CLAUDE.md or keel.config.json has no constraints at all. This is a
+  // An agent that can edit CLAUDE.md or formwork.config.json has no constraints at all. This is a
   // coverage gate in the strict sense: it fails when someone removes the guard, not when code
   // is merely wrong.
   const cfg = loadConfig();
   const guarded = cfg.loop?.protected ?? [];
   assert.ok(guarded.includes("CLAUDE.md"), "CLAUDE.md must be protected");
-  assert.ok(guarded.includes("keel.config.json"), "keel.config.json must be protected");
+  assert.ok(guarded.includes("formwork.config.json"), "formwork.config.json must be protected");
 });

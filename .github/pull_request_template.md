@@ -1,5 +1,5 @@
 <!--
-Keep this short. The detail belongs in .claude/reports/<slug>-report.md, which /keel-ship
+Keep this short. The detail belongs in .claude/reports/<slug>-report.md, which /formwork-ship
 writes and which you can paste below. This template exists to force three questions that are
 easy to skip and expensive to skip: what could this break, how do I undo it, and who checked.
 -->

@@ -1,9 +1,9 @@
 ---
-name: keel-spec
-description: Turn a feature idea into a written spec before any code is planned. Interviews the user about the problem, users, observable behaviour, and what done looks like, then writes docs/specs/<slug>.md. Run before keel-plan on anything non-trivial.
+name: formwork-spec
+description: Turn a feature idea into a written spec before any code is planned. Interviews the user about the problem, users, observable behaviour, and what done looks like, then writes docs/specs/<slug>.md. Run before formwork-plan on anything non-trivial.
 ---
 
-# keel-spec
+# formwork-spec
 
 Write down what we're building, and how we'll know it works — **before** anyone decides how.
 
@@ -18,7 +18,7 @@ nitpicking. A spec makes the target checkable *before* effort is spent hitting t
 A one-line fix. An obvious change. Something you could describe completely in a sentence.
 
 Ceremony on a small change teaches people to route around the process, which costs more than
-the spec saved. **Say you're skipping it and why**, then go straight to `/keel-plan`.
+the spec saved. **Say you're skipping it and why**, then go straight to `/formwork-plan`.
 
 ## 1. Understand the problem
 
@@ -66,7 +66,7 @@ Fill in every section. **Two are load-bearing:**
 
 - **Out of scope** — prevents drift during implementation, and prevents "but it doesn't
   handle X" in review when X was never the point
-- **Done when** — the checkable conditions. This is what `/keel-plan` turns into tasks
+- **Done when** — the checkable conditions. This is what `/formwork-plan` turns into tasks
 
 ## 5. Read it back
 
@@ -82,7 +82,7 @@ the plan step will create the branch.
 
 ## Then
 
-Tell the user the spec is ready and the next step is `/keel-plan`. **Do not start planning.**
+Tell the user the spec is ready and the next step is `/formwork-plan`. **Do not start planning.**
 They may want to edit it first, and a spec they edited is a spec they own.
 
 ## Do not

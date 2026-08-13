@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// keel — the gate runner.
+// formwork — the gate runner.
 //
 // This is what CI runs, and what you run before every commit. It is the single answer to
 // "is this repo green?", which is why `docs/testing.md` points here rather than listing
 // commands that drift.
 //
 // It is stack-agnostic on purpose: it knows nothing about npm, cargo, go, or pytest. The tier
-// decides WHICH gates are required; keel.config.json decides HOW to run each one. Swap the
+// decides WHICH gates are required; formwork.config.json decides HOW to run each one. Swap the
 // config and the same runner works on a different language.
 //
 //   node scripts/gates.mjs            run every required gate
@@ -54,7 +54,7 @@ function main() {
     }
   }
 
-  console.log(`${BOLD}keel gates${OFF} ${DIM}· ${cfg.name} · ${cfg.tier} — ${cfg.tierIntent}${OFF}\n`);
+  console.log(`${BOLD}formwork gates${OFF} ${DIM}· ${cfg.name} · ${cfg.tier} — ${cfg.tierIntent}${OFF}\n`);
 
   if (has("--list")) {
     for (const g of gates) {
@@ -108,7 +108,7 @@ function main() {
 
   if (skipped.length > 0) {
     console.log(
-      `${DIM}Skipped gates are unconfigured, not passing. Set them in keel.config.json ` +
+      `${DIM}Skipped gates are unconfigured, not passing. Set them in formwork.config.json ` +
         `→ gates.${skipped[0].name}${OFF}`,
     );
   }

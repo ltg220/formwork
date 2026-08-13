@@ -1,9 +1,9 @@
 ---
-name: keel-plan
-description: Turn a spec into a numbered task list on disk, where every task carries its own validation command. Writes .claude/plans/<slug>.md and creates the feature branch. Run after keel-spec and before keel-implement.
+name: formwork-plan
+description: Turn a spec into a numbered task list on disk, where every task carries its own validation command. Writes .claude/plans/<slug>.md and creates the feature branch. Run after formwork-spec and before formwork-implement.
 ---
 
-# keel-plan
+# formwork-plan
 
 Turn intent into a numbered list of tasks that someone else could execute.
 
@@ -23,7 +23,7 @@ evaporates.
 - The **actual code** you're about to change. Not from memory, not from `docs/architecture.md`.
   Read the files.
 
-If there's no spec and the work is non-trivial, stop and run `/keel-spec` first.
+If there's no spec and the work is non-trivial, stop and run `/formwork-spec` first.
 
 ## 2. Understand the blast radius
 
@@ -33,7 +33,7 @@ Before writing a single task, answer:
 - What breaks if this is wrong?
 - Is any of it irreversible — data, schema, anything external?
 
-This determines the **risk tier** for the pull request, and how hard `/keel-review` will look.
+This determines the **risk tier** for the pull request, and how hard `/formwork-review` will look.
 Put the answer in the plan's Risks section. "Nothing depends on this" is a valid answer, but
 it should be a conclusion, not an assumption.
 
@@ -100,7 +100,7 @@ They will catch things you cannot, because they know what this project is for.
 
 ## Then
 
-Tell them the plan is committed and `/keel-implement` is next. **Do not start implementing.**
+Tell them the plan is committed and `/formwork-implement` is next. **Do not start implementing.**
 
 ## Do not
 

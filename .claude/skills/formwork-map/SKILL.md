@@ -1,9 +1,9 @@
 ---
-name: keel-map
+name: formwork-map
 description: Generate docs/architecture.md from the actual code — module map, data flow for the main paths, seams, and non-obvious load-bearing details. Run after structural changes, or whenever the architecture doc is stale. Never hand-edit the output.
 ---
 
-# keel-map
+# formwork-map
 
 Write down how the system is actually built, by reading it.
 
@@ -21,7 +21,7 @@ what is there, not what was intended. That is usually the more useful document a
 
 - After a structural change: a new module, a moved boundary, a deleted subsystem
 - Before onboarding anyone (including a future session)
-- As part of `/keel-audit`
+- As part of `/formwork-audit`
 - At L3, before any release
 
 ## 1. Read the code

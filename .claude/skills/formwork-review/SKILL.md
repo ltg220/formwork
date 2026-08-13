@@ -1,15 +1,15 @@
 ---
-name: keel-review
-description: Adversarially review the current diff before it becomes a pull request, at the round count the tier demands. Spawns an independent reviewer whose job is to find what is wrong, verifies each finding before reporting it, and reviews the fix pass too. Run after keel-implement.
+name: formwork-review
+description: Adversarially review the current diff before it becomes a pull request, at the round count the tier demands. Spawns an independent reviewer whose job is to find what is wrong, verifies each finding before reporting it, and reviews the fix pass too. Run after formwork-implement.
 ---
 
-# keel-review
+# formwork-review
 
 Attack the diff before anyone else has to.
 
 ## Rounds by tier
 
-Read `keel.config.json` for `tier` and `review.rounds`.
+Read `formwork.config.json` for `tier` and `review.rounds`.
 
 | Tier | Rounds | Reviewer |
 |---|---|---|

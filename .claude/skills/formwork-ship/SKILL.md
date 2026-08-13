@@ -1,9 +1,9 @@
 ---
-name: keel-ship
-description: Finish a change — verify gates, update known issues and roadmap, write the session handoff, push the branch, and open a pull request using the report as its body. Run after keel-review. Stops at the pull request; never merges.
+name: formwork-ship
+description: Finish a change — verify gates, update known issues and roadmap, write the session handoff, push the branch, and open a pull request using the report as its body. Run after formwork-review. Stops at the pull request; never merges.
 ---
 
-# keel-ship
+# formwork-ship
 
 Close the loop. Leave a trail someone can follow.
 
@@ -69,7 +69,7 @@ Open the PR with the repo template. Fill it from the report:
 
 - **What changed** — one or two sentences
 - **Why** — link the spec
-- **Risk tier** — tick the box `/keel-plan` determined from the blast radius
+- **Risk tier** — tick the box `/formwork-plan` determined from the blast radius
 - **Blast radius** — from the plan's Risks section
 - **How to undo this** — concretely. If the honest answer is "we can't", say that; it should
   change how carefully this gets reviewed

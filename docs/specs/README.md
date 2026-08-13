@@ -19,7 +19,7 @@ greppable as a set.
 
 ## Written by
 
-`/keel-spec` — it interviews you, then writes the file. Edit it afterwards; it's yours.
+`/formwork-spec` — it interviews you, then writes the file. Edit it afterwards; it's yours.
 
 ## Template
 

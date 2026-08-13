@@ -56,4 +56,4 @@ What could go wrong. What to watch for while implementing.
 
 ---
 
-_No plans yet. `/keel-plan` writes them._
+_No plans yet. `/formwork-plan` writes them._

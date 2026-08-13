@@ -1,10 +1,10 @@
-name: keel
+name: formwork
 
 # The gates, run on every push and pull request.
 #
 # This workflow is deliberately thin. It does not know your stack — it calls the same three
 # scripts you run locally, so "green in CI" and "green on my machine" cannot drift apart.
-# Which gates actually run is decided by the tier in keel.config.json.
+# Which gates actually run is decided by the tier in formwork.config.json.
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
   pull_request:
 
 concurrency:
-  group: keel-${{ github.ref }}
+  group: formwork-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
       # Optional: only runs if the project configured an install command.
       - name: install
         run: |
-          CMD=$(node -e "const c=require('./keel.config.json');process.stdout.write(c.gates?.install??'')")
+          CMD=$(node -e "const c=require('./formwork.config.json');process.stdout.write(c.gates?.install??'')")
           if [ -n "$CMD" ]; then
             echo "running: $CMD"
             eval "$CMD"

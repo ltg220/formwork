@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-// keel — the protected-file guard.
+// formwork — the protected-file guard.
 //
 // A PreToolUse hook. Claude Code runs it before every Edit, Write, or Bash call and blocks the
 // call if it would modify a protected file.
 //
 // This exists because "the agent cannot edit its own rules" was, until this file, a sentence
-// in a README. By keel's own thesis that made it a wish — and it was the wish carrying the
+// in a README. By formwork's own thesis that made it a wish — and it was the wish carrying the
 // entire safety story for unattended operation. This turns it into a mechanism.
 //
 // Wired in .claude/settings.json. If that wiring is removed, the protection is gone: run
@@ -23,12 +23,12 @@ const REPO_ROOT = resolve(HERE, "..");
 
 // Always protected, regardless of configuration — including this file and the hook wiring.
 //
-// Without a floor, the list of protected files lives only in keel.config.json, and anything
+// Without a floor, the list of protected files lives only in formwork.config.json, and anything
 // able to edit that file can unprotect everything else. The floor makes the guard's own
 // integrity independent of the config it reads.
 const FLOOR = [
   "CLAUDE.md",
-  "keel.config.json",
+  "formwork.config.json",
   ".claude/settings.json",
   "scripts/guard.mjs",
 ];
@@ -49,7 +49,7 @@ const WRITE_INDICATORS = [
 ];
 
 function readConfigProtected() {
-  const path = resolve(REPO_ROOT, "keel.config.json");
+  const path = resolve(REPO_ROOT, "formwork.config.json");
   if (!existsSync(path)) return [];
   try {
     const cfg = JSON.parse(readFileSync(path, "utf8"));
@@ -174,7 +174,7 @@ async function main() {
     : `${result.path} is protected`;
 
   deny(
-    `${how} (matched "${result.pattern}" in keel.config.json → loop.protected).\n\n` +
+    `${how} (matched "${result.pattern}" in formwork.config.json → loop.protected).\n\n` +
       `Protected files are the rules the agent works under — the rulebook, the config, the ` +
       `gates, and this guard. An agent able to edit them has no constraints at all.\n\n` +
       `If this change is genuinely needed, ask the user to make it. Do not work around the ` +

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// keel — the quality ratchet.
+// formwork — the quality ratchet.
 //
 // A ratchet turns "we should keep the codebase clean" from a wish into a rule CI enforces.
 // It tracks numbers that should only ever go DOWN — lint findings, `any` casts, TODOs,
@@ -19,11 +19,11 @@
 // and end up with less protection than before it existed.
 //
 // So the override is possible but costly: it needs a written reason, it touches one metric at
-// a time, it is recorded permanently in .keel/baseline.json, and both this tool and doctor
+// a time, it is recorded permanently in .formwork/baseline.json, and both this tool and doctor
 // keep reporting how many exist. Easy enough to use under pressure, annoying enough that it
 // does not become routine.
 //
-// Configure in keel.config.json:
+// Configure in formwork.config.json:
 //
 //   "ratchet": {
 //     "metrics": {
@@ -43,7 +43,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { loadConfig, REPO_ROOT, ConfigError } from "./lib/config.mjs";
 
-const BASELINE_PATH = join(REPO_ROOT, ".keel", "baseline.json");
+const BASELINE_PATH = join(REPO_ROOT, ".formwork", "baseline.json");
 
 const RED = "\x1b[31m";
 const GREEN = "\x1b[32m";
@@ -67,7 +67,7 @@ function readBaseline() {
   try {
     return JSON.parse(readFileSync(BASELINE_PATH, "utf8"));
   } catch (err) {
-    console.error(`${RED}.keel/baseline.json is not valid JSON: ${err.message}${OFF}`);
+    console.error(`${RED}.formwork/baseline.json is not valid JSON: ${err.message}${OFF}`);
     process.exit(2);
   }
 }
@@ -113,19 +113,19 @@ function main() {
   const metrics = cfg.ratchet?.metrics ?? {};
   const names = Object.keys(metrics);
 
-  console.log(`${BOLD}keel ratchet${OFF} ${DIM}· ${cfg.name} · ${cfg.tier}${OFF}\n`);
+  console.log(`${BOLD}formwork ratchet${OFF} ${DIM}· ${cfg.name} · ${cfg.tier}${OFF}\n`);
 
   if (!cfg.ratchet?.enabled && !update && accept === null) {
     console.log(
       `${DIM}Ratchet is off at tier ${cfg.tier}. Nothing checked.\n` +
-        `Raise the tier, or set ratchet.enabled true in keel.config.json.${OFF}`,
+        `Raise the tier, or set ratchet.enabled true in formwork.config.json.${OFF}`,
     );
     return 0;
   }
 
   if (names.length === 0) {
     console.log(
-      `${DIM}No metrics configured. Add them under ratchet.metrics in keel.config.json.\n` +
+      `${DIM}No metrics configured. Add them under ratchet.metrics in formwork.config.json.\n` +
         `A ratchet with no metrics is not protecting anything.${OFF}`,
     );
     return 0;
@@ -180,7 +180,7 @@ function main() {
     console.log(
       `${YELLOW}ACCEPTED${OFF} ${accept}: ${from ?? "unset"} → ${value}\n` +
         `${DIM}reason: ${reason}${OFF}\n\n` +
-        `${YELLOW}Recorded permanently in .keel/baseline.json. Commit it in its own commit so\n` +
+        `${YELLOW}Recorded permanently in .formwork/baseline.json. Commit it in its own commit so\n` +
         `the reason is attached to the change that needed it.${OFF}`,
     );
     return 0;
@@ -256,7 +256,7 @@ function main() {
   }
 
   if (update) {
-    console.log(`${GREEN}Baseline written to .keel/baseline.json. Commit it.${OFF}`);
+    console.log(`${GREEN}Baseline written to .formwork/baseline.json. Commit it.${OFF}`);
     return 0;
   }
 

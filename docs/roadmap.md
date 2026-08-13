@@ -20,7 +20,7 @@ phases and why they're in that order.
 
 <!-- The one phase in flight. If there is more than one, that is the problem to fix first. -->
 
-**Phase 0 — Initialise.** Run `/keel-init` to choose a stack, record why, and wire the gates.
+**Phase 0 — Initialise.** Run `/formwork-init` to choose a stack, record why, and wire the gates.
 
 *Done when:* `node scripts/gates.mjs` runs real commands and is green, and
 `docs/decisions/0001-stack.md` exists.

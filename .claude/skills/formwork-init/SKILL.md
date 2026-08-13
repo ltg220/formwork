@@ -1,9 +1,9 @@
 ---
-name: keel-init
-description: Initialise a fresh keel repo. Interviews the user about what they are building, recommends and records a stack, picks the tier, fills in CLAUDE.md, wires the real test runner and CI, and leaves the repo green. Run this once, first, in a new project created from the keel template.
+name: formwork-init
+description: Initialise a fresh formwork repo. Interviews the user about what they are building, recommends and records a stack, picks the tier, fills in CLAUDE.md, wires the real test runner and CI, and leaves the repo green. Run this once, first, in a new project created from the formwork template.
 ---
 
-# keel-init
+# formwork-init
 
 The front door. Turns a generic template into *this* project.
 
@@ -12,7 +12,7 @@ commands and passes on an empty repo.
 
 ## Before starting
 
-Read `keel.config.json`. If `name` is not `"unnamed-project"`, this repo is already
+Read `formwork.config.json`. If `name` is not `"unnamed-project"`, this repo is already
 initialised — **stop and ask** whether to re-run. Re-initialising overwrites the rulebook and
 the stack decision, and that is rarely what someone wants.
 
@@ -87,9 +87,9 @@ need permission to move fast, or they won't.
 
 ## 4. Write the decision record
 
-**First, clear keel's own decisions.** The template ships decision docs about *keel itself*
+**First, clear formwork's own decisions.** The template ships decision docs about *formwork itself*
 (each marked as such in a note under its title). They are inherited by every repo created from
-the template, where they are noise — a game project does not care why keel's scripts are
+the template, where they are noise — a game project does not care why formwork's scripts are
 JavaScript. Delete any decision doc carrying that marker. Keep `0000-template.md`.
 
 Then create `docs/decisions/0001-stack.md` from `docs/decisions/0000-template.md`.
@@ -118,7 +118,7 @@ rulebook front-loaded with speculative rules is one nobody reads.
 
 ## 6. Wire the gates
 
-Update `keel.config.json`:
+Update `formwork.config.json`:
 
 - `name`, `stack`, `tier`
 - `gates.*` — the real commands for this stack
@@ -132,7 +132,7 @@ test runner installed with **one passing placeholder test**. Whatever the stack,
 is the same: gates run real commands, and they pass.
 
 **Keep the harness's own tests running.** The template ships with
-`gates.test` pointing at `node --test "scripts/**/*.test.mjs"`, which covers keel's tier logic
+`gates.test` pointing at `node --test "scripts/**/*.test.mjs"`, which covers formwork's tier logic
 — including the invariant that the loop never merges. Do not replace that command; **chain**
 it:
 
@@ -166,7 +166,7 @@ skipping. If a gate skips, it isn't wired — go back to step 6.
 
 ## 9. Commit
 
-One commit: `chore(keel): initialise <name> at <tier>`.
+One commit: `chore(formwork): initialise <name> at <tier>`.
 
 ## Report back
 
@@ -177,7 +177,7 @@ Tell the user, briefly:
 - Which gates are live and what each proves
 - The one thing to do next
 
-Then stop. Do not begin building — that is `/keel-spec`.
+Then stop. Do not begin building — that is `/formwork-spec`.
 
 ## Do not
 

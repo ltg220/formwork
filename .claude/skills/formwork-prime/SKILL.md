@@ -1,9 +1,9 @@
 ---
-name: keel-prime
-description: Load context before working on an unfamiliar or long-untouched keel repo. Reads the rulebook, current state, recent history, and code structure in the right order, then reports what it found and what it is unsure about. Run at the start of a session, before planning or implementing.
+name: formwork-prime
+description: Load context before working on an unfamiliar or long-untouched formwork repo. Reads the rulebook, current state, recent history, and code structure in the right order, then reports what it found and what it is unsure about. Run at the start of a session, before planning or implementing.
 ---
 
-# keel-prime
+# formwork-prime
 
 Load context, in the right order, before touching anything.
 
@@ -15,7 +15,7 @@ Unwinding is not.
 
 - Starting a session on a repo you haven't touched recently
 - After someone else (or another session) has been working
-- Before `/keel-plan` on anything non-trivial
+- Before `/formwork-plan` on anything non-trivial
 - Any time you notice you're guessing
 
 Skip it for a one-line fix you already understand.
@@ -63,7 +63,7 @@ node scripts/doctor.mjs
 ### 7. The code
 
 Only now. `docs/architecture.md` if it's been generated — but **verify it against the actual
-tree** rather than trusting it, since it is a snapshot of whenever `/keel-map` last ran.
+tree** rather than trusting it, since it is a snapshot of whenever `/formwork-map` last ran.
 
 Then look at structure directly: top-level layout, entry points, and the area you're about to
 touch. Read the tests near it — tests describe intended behaviour more honestly than comments.
@@ -83,7 +83,7 @@ Six lines, not an essay:
 ## Do not
 
 - **Do not read every file.** Priming is orientation, not an audit. If you're reading source
-  files one by one, you've drifted into `/keel-map`.
+  files one by one, you've drifted into `/formwork-map`.
 - **Do not trust a doc over the code.** Docs are claims; the code is the fact. Where they
   disagree, say so — that disagreement is a finding worth reporting.
 - **Do not start work at the end of priming.** Report, then wait. The user may redirect based

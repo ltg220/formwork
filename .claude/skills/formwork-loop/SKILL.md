@@ -1,9 +1,9 @@
 ---
-name: keel-loop
+name: formwork-loop
 description: Run the outer loop unattended — take the top item from tasks/queue.md, run spec through review, open a pull request, and stop. Never merges, never edits its own rules, never adds its own work. Use with /loop for a scheduled cadence.
 ---
 
-# keel-loop
+# formwork-loop
 
 Unattended work. One queue item at a time. **It stops at the pull request.**
 
@@ -18,7 +18,7 @@ You wake up to pull requests to review, not to merged code you have never seen.
 
 These are not configurable down. If any is missing, stop and say so.
 
-**1. It cannot edit its own rules.** Everything in `keel.config.json` → `loop.protected` is
+**1. It cannot edit its own rules.** Everything in `formwork.config.json` → `loop.protected` is
 off limits — including `CLAUDE.md` and the config itself. An agent that can rewrite its own
 constraints has none. **Check the list before every write.** If a queue item requires touching
 a protected file, stop and hand it to the user.
@@ -37,7 +37,7 @@ for the wrong reason.
 
 ## Autonomy levels
 
-`keel.config.json` → `loop.autonomy`. Raised by the user, **never by this skill.**
+`formwork.config.json` → `loop.autonomy`. Raised by the user, **never by this skill.**
 
 | Level | Allowed |
 |---|---|
@@ -67,11 +67,11 @@ Empty queue → stop and say so. That is a good outcome.
 **3. Run the inner loop**, honouring the item's tier tag if it has one:
 
 ```
-/keel-spec    (skip if the item is small and unambiguous — say you skipped it)
-/keel-plan
-/keel-implement
-/keel-review
-/keel-ship    (only at autonomy 2+)
+/formwork-spec    (skip if the item is small and unambiguous — say you skipped it)
+/formwork-plan
+/formwork-implement
+/formwork-review
+/formwork-ship    (only at autonomy 2+)
 ```
 
 **4. Mark the item `[x]`** — only once its pull request is open. At autonomy 0 or 1, leave it
@@ -87,7 +87,7 @@ Never silently dropped.
 This skill runs one pass. For a cadence, wrap it:
 
 ```
-/loop 30m /keel-loop
+/loop 30m /formwork-loop
 ```
 
 Pick an interval matched to how long an item actually takes. Waking every five minutes to

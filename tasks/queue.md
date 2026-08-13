@@ -3,7 +3,7 @@
 The outer loop reads this file top-down and takes the first unchecked item.
 
 Keep items **small and independently shippable** — one item should become one pull request. An
-item that can't be described in two lines is an epic; run `/keel-spec` on it and let the plan
+item that can't be described in two lines is an epic; run `/formwork-spec` on it and let the plan
 break it up.
 
 ## Format

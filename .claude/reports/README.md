@@ -1,7 +1,7 @@
 # Reports
 
-What actually happened when a plan was implemented. Written by `/keel-implement`, used as the
-pull request body by `/keel-ship`.
+What actually happened when a plan was implemented. Written by `/formwork-implement`, used as the
+pull request body by `/formwork-ship`.
 
 A plan says what was intended. A report says what occurred — and the gap between them is the
 most useful information either document contains.

@@ -20,9 +20,9 @@ test("blocks direct edits to the rulebook", () => {
 });
 
 test("the floor holds even when the config lists nothing", () => {
-  // The critical case: if keel.config.json is emptied, corrupted, or its protection list is
+  // The critical case: if formwork.config.json is emptied, corrupted, or its protection list is
   // stripped, the rulebook and the guard itself must still be defended.
-  for (const file of ["CLAUDE.md", "keel.config.json", ".claude/settings.json", "scripts/guard.mjs"]) {
+  for (const file of ["CLAUDE.md", "formwork.config.json", ".claude/settings.json", "scripts/guard.mjs"]) {
     assert.equal(edit(file, []).blocked, true, `${file} was not protected by the floor`);
   }
 });
@@ -73,7 +73,7 @@ test("Write and NotebookEdit are covered, not just Edit", () => {
 test("shell writes to protected paths are caught", () => {
   // Guarding Edit and Write alone would be trivially bypassed by shelling out.
   assert.equal(bash("echo hacked > CLAUDE.md").blocked, true);
-  assert.equal(bash("sed -i 's/x/y/' keel.config.json").blocked, true);
+  assert.equal(bash("sed -i 's/x/y/' formwork.config.json").blocked, true);
   assert.equal(bash("rm docs/decisions/0001-harness-language.md").blocked, true);
   assert.equal(bash("cp /tmp/evil scripts/gates.mjs").blocked, true);
 });

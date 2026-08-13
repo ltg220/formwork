@@ -1,9 +1,9 @@
 ---
-name: keel-implement
-description: Execute a plan file task by task, running each task's validation command before moving to the next, then write a report of what actually happened. Run after keel-plan. Resumable — picks up from the first unchecked task if a previous session stopped partway.
+name: formwork-implement
+description: Execute a plan file task by task, running each task's validation command before moving to the next, then write a report of what actually happened. Run after formwork-plan. Resumable — picks up from the first unchecked task if a previous session stopped partway.
 ---
 
-# keel-implement
+# formwork-implement
 
 Execute the plan. One task at a time. Each one verified before the next begins.
 
@@ -100,7 +100,7 @@ one giant commit at the end: that hides causation and makes `git bisect` useless
 - Anything that deviated from the plan
 - Anything you noticed and did not fix
 
-Then stop. `/keel-review` is next.
+Then stop. `/formwork-review` is next.
 
 ## Do not
 
