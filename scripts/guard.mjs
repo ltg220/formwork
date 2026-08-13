@@ -81,9 +81,15 @@ function globToRegExp(pattern) {
 
 // Normalise to a repo-relative POSIX path so Windows backslashes and absolute paths compare
 // the same as the forward-slash globs written in config.
+//
+// Backslashes are converted on every platform, deliberately. On Windows the harness sends
+// backslash paths and the guard would match nothing without this. On POSIX a literal backslash
+// in a filename is legal but pathological, and mistaking one for a separator can only ever
+// over-block — the safe direction for a guard, and it keeps the behaviour (and its tests)
+// identical on the machine you develop on and the one CI runs.
 function normalise(p) {
   if (!p) return null;
-  const abs = resolve(REPO_ROOT, p);
+  const abs = resolve(REPO_ROOT, String(p).replace(/\\/g, "/"));
   const rel = relative(REPO_ROOT, abs);
   if (rel.startsWith("..")) return null; // outside the repo — not ours to guard
   return rel.split(sep).join("/");

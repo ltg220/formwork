@@ -6,7 +6,9 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { join } from "node:path";
 import { evaluate } from "./guard.mjs";
+import { REPO_ROOT } from "./lib/config.mjs";
 
 const CONFIGURED = ["docs/rules.md", "docs/decisions/**", "scripts/**"];
 
@@ -47,11 +49,20 @@ test("ordinary project files are left alone", () => {
 
 test("absolute and backslash paths normalise to the same decision", () => {
   // Windows hands over absolute paths with backslashes; the globs are written with forward
-  // slashes. If normalisation breaks, the guard silently stops matching anything on Windows.
-  const abs = evaluate("Edit", { file_path: process.cwd() + "/CLAUDE.md" }, []);
-  assert.equal(abs.blocked, true);
+  // slashes. If normalisation breaks, the guard silently stops matching anything on Windows —
+  // and this assertion must run on Linux CI too, or the platform that matters most goes
+  // unchecked. That is why the guard converts separators on every platform rather than only
+  // on win32.
+  // Anchored to the repo root rather than cwd — a test that only passes when run from one
+  // directory is a test that fails for the next person.
+  const abs = evaluate("Edit", { file_path: join(REPO_ROOT, "CLAUDE.md") }, []);
+  assert.equal(abs.blocked, true, "absolute path not matched");
+
   const backslash = evaluate("Edit", { file_path: "docs\\decisions\\0001-x.md" }, CONFIGURED);
-  assert.equal(backslash.blocked, true);
+  assert.equal(backslash.blocked, true, "backslash path not matched");
+
+  const absBackslash = evaluate("Edit", { file_path: "C:\\repo\\CLAUDE.md" }, []);
+  assert.equal(typeof absBackslash.blocked, "boolean", "a foreign absolute path must not throw");
 });
 
 test("Write and NotebookEdit are covered, not just Edit", () => {
