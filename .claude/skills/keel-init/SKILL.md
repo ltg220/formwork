@@ -69,7 +69,12 @@ need permission to move fast, or they won't.
 
 ## 4. Write the decision record
 
-Create `docs/decisions/0001-stack.md` from `docs/decisions/0000-template.md`.
+**First, clear keel's own decisions.** The template ships decision docs about *keel itself*
+(each marked as such in a note under its title). They are inherited by every repo created from
+the template, where they are noise — a game project does not care why keel's scripts are
+JavaScript. Delete any decision doc carrying that marker. Keep `0000-template.md`.
+
+Then create `docs/decisions/0001-stack.md` from `docs/decisions/0000-template.md`.
 
 Fill in every section. **The two that matter most:**
 
