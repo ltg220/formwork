@@ -142,7 +142,7 @@ That last one isn't caution, it's the current state of the art: autonomous agent
 ## What keel deliberately is not
 
 - **Not a framework.** No dependency, no import, no runtime. Delete any file and the rest still works.
-- **Not multi-agent.** One agent, plus targeted subagents for review. Persona swarms measure ~3.7× worse on time-to-debug, and this is optimised for a small team or one person.
+- **Not multi-agent.** One agent, plus targeted subagents for review. Multi-persona swarms add orchestration surface that is markedly harder to debug when it goes wrong, and keel is optimised for a small team or one person.
 - **Not a stack.** `keel.config.json` is the only file that knows what you're building with.
 - **Not auto-merge.** See above.
 

@@ -46,6 +46,24 @@ Weight the recommendation toward:
 - **An escape hatch.** Prefer things you can leave. Standard Postgres over a proprietary
   datastore; owned components over a rented design system.
 
+### Decide the framework posture — research it, don't assume
+
+**Do not carry a default bias into this.** Whether to lean on a framework is a *domain*
+question, and the answer flips completely between domains:
+
+- **Games, UI, 3D, audio** — a framework is doing work you would otherwise do worse. Writing
+  your own renderer or physics loop to stay "dependency-free" is the unjustified choice.
+- **Agent loops, custom protocols, anything whose behaviour you must debug line by line** — a
+  framework that owns the loop makes the loop opaque exactly when you need to see it.
+- **Most things in between** — a framework for the plumbing, direct code for the part that is
+  actually your product.
+
+Look up what this domain's practitioners actually use before recommending. **An untested
+preference is not knowledge**, and this decision shapes every later one.
+
+Apply rule #8's two tests to each candidate: does it hide something you'll need to see when it
+breaks, and can you leave it?
+
 **Get explicit approval before writing anything.** If the user pushes back, take it — they
 know constraints you don't, and this decision is theirs.
 
@@ -76,9 +94,12 @@ JavaScript. Delete any decision doc carrying that marker. Keep `0000-template.md
 
 Then create `docs/decisions/0001-stack.md` from `docs/decisions/0000-template.md`.
 
-Fill in every section. **The two that matter most:**
+Fill in every section. **The three that matter most:**
 
 - **Options considered** — including the rejected ones and specifically why they lost
+- **Framework posture** — where a framework is welcome in this project and where it is not,
+  with the reasoning. Without this, rule #8 gets read as a blanket ban, and a later session
+  argues against a dependency that is obviously correct for the domain
 - **What would change our mind** — the concrete trigger for revisiting
 
 Without those, in three months nobody knows why, and the stack gets re-litigated from scratch.

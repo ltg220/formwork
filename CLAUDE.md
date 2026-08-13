@@ -88,11 +88,24 @@ Every unit should be independently testable and replaceable. No tight coupling b
 systems. If a change to A requires understanding B's internals, the seam is in the wrong
 place.
 
-## 8. No frameworks unless justified
+## 8. Choose dependencies deliberately — in both directions
 
-Direct calls over abstraction layers. Every call visible, debuggable, replaceable. If a
-dependency is adopted, the reason goes in `docs/decisions/`. "It seemed standard" is not a
-reason.
+Two questions, every time:
+
+1. **Does it hide something you need to see when it breaks?**
+2. **Can you leave it?**
+
+A framework that owns your core loop makes that loop undebuggable — that is the disqualifying
+kind. A framework that does work you would otherwise do worse is the opposite: refusing it is
+the unjustified choice. Nobody should write their own renderer, ORM, or test runner to stay
+pure.
+
+"Direct calls over abstraction" is a good default for the code that **is** your product. It is
+a bad default for everything around it.
+
+Neither "it seemed standard" nor "frameworks are bad" is a reason. The posture for this
+project — where a framework is welcome and where it is not — is decided at init and recorded
+in `docs/decisions/0001-stack.md`. Read it before arguing either way.
 
 ## 9. No regressions
 
