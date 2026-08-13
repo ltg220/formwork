@@ -1,0 +1,12 @@
+# Normalise line endings in the repository to LF.
+#
+# Shell scripts are the reason this matters: a CRLF line ending on the shebang line makes bash
+# fail with a confusing "bad interpreter" error on Linux and in CI. Committing them as LF means
+# a Windows checkout can still use CRLF locally without ever writing CRLF into a commit.
+* text=auto eol=lf
+
+*.sh text eol=lf
+*.mjs text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.json text eol=lf
