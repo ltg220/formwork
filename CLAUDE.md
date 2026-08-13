@@ -31,12 +31,9 @@ Why this stack, what we rejected, and what would make us change our mind:
 - **L2** — product. Mess is flagged: lint, ratchet, known-issues, one review round.
 - **L3** — production. Mess is blocked: coverage gates, two adversarial rounds, drift checks.
 
-**Raising the tier is free. Lowering it is ceremonial.** Add a gate, tighten review, move up —
-do it whenever it seems right, no permission needed. Going the other way removes protection
-this project decided it wanted, so it takes a decision doc saying what changed.
-
-The asymmetry is the point. The tier was chosen at init, at the moment of least information
-about the project; correcting it upward must never be the thing that needs paperwork.
+**Raising the tier is free; lowering it takes a decision doc.** The tier is chosen at init —
+the moment of least information about the project — so correcting it upward must never be the
+thing that needs paperwork. Removing protection the project decided it wanted does.
 
 ---
 
