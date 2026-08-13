@@ -131,7 +131,7 @@ pick from queue → inner loop → gates → review → open PR → stop
 Four safety properties, all non-negotiable:
 
 - **Timer, not webhooks.** Polls on a schedule. Simple to reason about, trivial to stop.
-- **Protected files.** A list in `keel.config.json` the agent cannot edit — including `CLAUDE.md` and the config itself. It cannot rewrite its own rules.
+- **Protected files, enforced by a hook.** `scripts/guard.mjs` runs as a `PreToolUse` hook and blocks any Edit, Write, or Bash call that would modify a path in `loop.protected`. A hardcoded floor — the rulebook, the config, the hook wiring, and the guard itself — holds even if the config is emptied or corrupted. `doctor` fails if the hook is unregistered. Direct file edits are blocked deterministically; shell commands are caught by a conservative heuristic (see Honest limits).
 - **Autonomy dial (0–5).** One number decides what it's allowed to do. Raised by you, never by it.
 - **It never merges.** The loop stops at the pull request. Always.
 
@@ -147,6 +147,41 @@ That last one isn't caution, it's the current state of the art: autonomous agent
 - **Not auto-merge.** See above.
 
 ---
+
+## Honest limits
+
+Things a skeptical reader should know before trusting any of the above.
+
+**The template is mostly prose, and prose is the layer keel itself calls weakest.** The
+ratchet ships with no metrics and coverage gates are L3-only, so what you clone is largely
+rules-as-text. The enforcement is generated per project by `/keel-init`. That is a real
+concession: until you initialise, the strong layers are potential rather than present.
+
+**Two rules cannot be mechanically enforced, and they are important ones.** "A test must
+exercise the path it claims to" and "say what actually happened" are claims about the agent's
+own honesty, and no gate can check them. Worse, `.claude/reports/` is agent-authored evidence
+about agent behaviour, promoted into the pull request body. Treat the gates as the objective
+signal and the report as testimony.
+
+**The Bash side of the guard is a heuristic.** Edit, Write, and NotebookEdit are matched on
+the exact path and blocked deterministically. Shell commands cannot be parsed reliably, so the
+guard blocks when a command both mentions a protected path and looks like a write. It errs
+toward blocking, and a determined workaround would get through. The floor and the hook close
+the accident case, not an adversary.
+
+**It needs Node, whatever you are building.** `gates.mjs`, `ratchet.mjs`, and `doctor.mjs` are
+plain JavaScript with no dependencies, but a Python or Go project still needs Node installed to
+run its own gates. That was the price of a harness that runs on a clean clone with no install
+step — see `docs/decisions/0001-harness-language.md`.
+
+**Moving state out of the rulebook does not stop it rotting.** `CLAUDE.md` bans dated state
+because state rots; the state then lives in `known-issues.md` and `handoffs/`, which rot too.
+Two things soften this: those files are explicitly labelled as hypotheses to verify rather
+than truth, and `doctor` warns when they fall behind the commit history. Only
+`docs/architecture.md` gets the real fix, which is being generated rather than maintained.
+
+**It is new.** There is no example project yet, and the ideas here have more mileage than this
+particular implementation of them.
 
 ## Prior art
 

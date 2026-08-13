@@ -10,10 +10,12 @@
 // themselves.
 //
 //   node scripts/doctor.mjs
+//   node scripts/doctor.mjs --tier L3   check against a stricter tier without editing config
 //
 // Exit 0 = healthy (warnings allowed). Exit 1 = something is broken.
 
 import { readFileSync, existsSync, readdirSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 import { loadConfig, REPO_ROOT, ConfigError, TIER_DEFAULTS } from "./lib/config.mjs";
 
@@ -183,6 +185,100 @@ function checkProtected(cfg) {
   ok(`${list.length} protected path(s), rulebook and config both covered`);
 }
 
+// The guard is only real if the harness is told to run it. Deleting one line from
+// settings.json removes every protection with no other symptom — no test fails, nothing looks
+// different. That silence is exactly why this check is a hard failure.
+function checkGuard(cfg) {
+  if (!exists("scripts/guard.mjs")) {
+    fail(
+      "scripts/guard.mjs is missing — protected files are not enforced",
+      "Restore it from the keel template. Without it, loop.protected is only a suggestion.",
+    );
+    return;
+  }
+
+  if (!exists(".claude/settings.json")) {
+    fail(
+      "No .claude/settings.json — the protected-file guard is not wired up",
+      'Add a PreToolUse hook running "node scripts/guard.mjs".',
+    );
+    return;
+  }
+
+  let settings;
+  try {
+    settings = JSON.parse(read(".claude/settings.json"));
+  } catch (err) {
+    fail(`.claude/settings.json is not valid JSON: ${err.message}`, "Fix it — the guard is not running.");
+    return;
+  }
+
+  const entries = settings?.hooks?.PreToolUse ?? [];
+  const wired = entries.filter((e) =>
+    (e?.hooks ?? []).some((h) => String(h?.command ?? "").includes("guard.mjs")),
+  );
+
+  if (wired.length === 0) {
+    fail(
+      "The protected-file guard is not registered as a PreToolUse hook",
+      'Add it to .claude/settings.json. Until then loop.protected is documentation, not enforcement.',
+    );
+    return;
+  }
+
+  // Guarding Edit and Write but not Bash leaves an open door: `echo x > CLAUDE.md`.
+  const matchers = wired.map((e) => String(e.matcher ?? ""));
+  const missing = ["Edit", "Write", "Bash"].filter((t) => !matchers.some((m) => m.includes(t)));
+  if (missing.length > 0) {
+    warn(
+      `Guard hook does not cover: ${missing.join(", ")}`,
+      "A guard that misses Bash is bypassed by a shell redirect. Widen the matcher.",
+    );
+    return;
+  }
+
+  ok(`Protected-file guard wired and covering ${cfg.loop?.protected?.length ?? 0} path(s)`);
+}
+
+function git(args) {
+  const proc = spawnSync("git", args, { cwd: REPO_ROOT, encoding: "utf8" });
+  if (proc.error || proc.status !== 0) return null;
+  return (proc.stdout ?? "").trim();
+}
+
+// Moving state out of CLAUDE.md stops the RULEBOOK rotting; it does not stop the state
+// rotting. Without this check, the memory layer degrades silently — and stale docs are worse
+// than none, because people act on them.
+function checkStaleness(cfg) {
+  if (!cfg.docs?.knownIssues && !cfg.docs?.handoffs) return;
+  if (!git(["rev-parse", "--git-dir"])) return; // not a git repo yet
+
+  const total = Number(git(["rev-list", "--count", "HEAD"]) ?? 0);
+  if (!total) return; // no history to measure against
+
+  const limit = cfg.docs?.stalenessCommits ?? 15;
+
+  for (const [enabled, path, label] of [
+    [cfg.docs?.handoffs, "docs/handoffs", "handoffs"],
+    [cfg.docs?.knownIssues, "docs/known-issues.md", "known-issues"],
+  ]) {
+    if (!enabled) continue;
+
+    const last = git(["log", "-1", "--format=%H", "--", path]);
+    const behind = last ? Number(git(["rev-list", "--count", `${last}..HEAD`]) ?? 0) : total;
+
+    if (behind > limit) {
+      warn(
+        `${label} last updated ${behind} commits ago (limit ${limit})`,
+        "The memory layer is drifting. Run /keel-audit, or write the handoff you skipped. " +
+          "Stale docs mislead more than missing ones.",
+      );
+    } else {
+      ok(`${label} current (${behind} commit(s) behind)`);
+    }
+  }
+}
+
 function checkArchitecture(cfg) {
   if (!cfg.docs?.architectureDrift) return;
   if (!exists("docs/architecture.md")) {
@@ -198,9 +294,12 @@ function checkArchitecture(cfg) {
 function main() {
   console.log(`${BOLD}keel doctor${OFF}\n`);
 
+  const tierArg = process.argv.indexOf("--tier");
+  const tierOverride = tierArg === -1 ? null : process.argv[tierArg + 1] ?? null;
+
   let cfg;
   try {
-    cfg = loadConfig();
+    cfg = loadConfig({ tierOverride });
   } catch (err) {
     if (err instanceof ConfigError) {
       console.error(`${RED}${err.message}${OFF}`);
@@ -218,6 +317,8 @@ function main() {
   checkGates(cfg);
   checkRatchet(cfg);
   checkProtected(cfg);
+  checkGuard(cfg);
+  checkStaleness(cfg);
   checkArchitecture(cfg);
 
   for (const f of findings) {
