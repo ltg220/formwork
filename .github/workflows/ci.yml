@@ -1,0 +1,47 @@
+name: keel
+
+# The gates, run on every push and pull request.
+#
+# This workflow is deliberately thin. It does not know your stack — it calls the same three
+# scripts you run locally, so "green in CI" and "green on my machine" cannot drift apart.
+# Which gates actually run is decided by the tier in keel.config.json.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: keel-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gates:
+    name: gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Optional: only runs if the project configured an install command.
+      - name: install
+        run: |
+          CMD=$(node -e "const c=require('./keel.config.json');process.stdout.write(c.gates?.install??'')")
+          if [ -n "$CMD" ]; then
+            echo "running: $CMD"
+            eval "$CMD"
+          else
+            echo "no install command configured — skipping"
+          fi
+
+      - name: doctor
+        run: node scripts/doctor.mjs
+
+      - name: gates
+        run: node scripts/gates.mjs
+
+      - name: ratchet
+        run: node scripts/ratchet.mjs

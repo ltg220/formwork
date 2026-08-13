@@ -1,0 +1,31 @@
+{
+  "name": "unnamed-project",
+  "tier": "L1",
+  "stack": null,
+
+  "gates": {
+    "install": null,
+    "typecheck": null,
+    "lint": null,
+    "test": "node --test \"scripts/**/*.test.mjs\"",
+    "build": null
+  },
+
+  "ratchet": {
+    "metrics": {}
+  },
+
+  "review": {},
+
+  "loop": {
+    "queue": "tasks/queue.md",
+    "protected": [
+      "CLAUDE.md",
+      "keel.config.json",
+      "docs/rules.md",
+      "docs/decisions/**",
+      ".github/workflows/**",
+      "scripts/**"
+    ]
+  }
+}

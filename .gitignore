@@ -1,0 +1,17 @@
+node_modules/
+dist/
+build/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+
+# keel: worktrees live here, never committed
+worktrees/
+
+# keel: local-only agent scratch
+.claude/scratch/
+.claude/settings.local.json
